@@ -1,0 +1,14 @@
+
+#chipmunk-ext-container{
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background: #fefefe;
+  border-bottom: 5px solid green;
+  z-index: 1000;
+}
+
+#url-input{
+  font-size: 0.8rem;
+}

@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "chipmunk chrome extension",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "A Google Chrome extension to stash stuff in Google Drive",
+    "description": "The description of the application"
+  }
+}
