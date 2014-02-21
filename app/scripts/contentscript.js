@@ -5,9 +5,9 @@
 'use strict';
 
 
-function addBannerToDom(){
+function addBannerToDom(text){
   $('body').append('<div id="chipmunk-ext-container"> '+
-      '<p> saved</p>'+
+      '<p>'+text+'</p>'+
       '<button id="chipmunk-close">close</button>'+
     '</div>');
 
@@ -18,7 +18,7 @@ function addBannerToDom(){
   };
 }
 
-// just removes the extension container from the page
+// removes the extension container from the page
 function dismissBanner(){
   $('#chipmunk-ext-container').remove();
 }
@@ -27,17 +27,17 @@ function dismissBanner(){
 // gets extension options from localstorage
 function getConfig(){
   var deferred = $.Deferred();
-  chrome.runtime.sendMessage(
-    {message:'getLocalStorage'},
-    function(response){
+  function resolveConfigData(response){
       deferred.resolve(response.data);
-    }
-  );
+  }
+
+  chrome.runtime.sendMessage({message:'getLocalStorage'}, resolveConfigData);
+
   return deferred.promise();
 }
 
+
 // value is the piece of data to be stored
-// type is a key to [name] > [column] mapping in the options
 function sendToDrive(options, value){
   var data = {
     worksheetKey: options.worksheetKey,
@@ -62,11 +62,12 @@ function sendToDrive(options, value){
 
 getConfig().done(function start(d){
   var options = d;
-  var chipmunkUI = addBannerToDom();
+  // TODO call this with proper parameter after ajax
+  var chipmunkUI = addBannerToDom('saved');
 
   sendToDrive(options, document.location.href);
-  chipmunkUI.dismiss.on('click', dismissBanner);
 
+  chipmunkUI.dismiss.on('click', dismissBanner);
 
 });
 
