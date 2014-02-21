@@ -1,5 +1,7 @@
+/*
+  This script gets run on the extension Options page.
+*/
 'use strict';
-
 
 
 // populate form with saved data if available.
