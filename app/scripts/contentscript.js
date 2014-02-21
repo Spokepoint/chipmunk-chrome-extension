@@ -4,22 +4,69 @@
 
 'use strict';
 
-var extUI, dismiss;
-// just removes the extension container from the page
-function dismissExt(){
-  document.body.removeChild(document.getElementById('chipmunk-ext-container'));
+
+function addBannerToDom(){
+  $('body').append('<div id="chipmunk-ext-container"> '+
+      '<p> saved</p>'+
+      '<button id="chipmunk-close">close</button>'+
+    '</div>');
+
+  // return a ui elements hash
+  return {
+    dismiss: $('#chipmunk-close'),
+    container: $('#chipmunk-ext-container'),
+  };
 }
 
-// create our container
-// (we WILL use templating later but for now this inline string is OK)
-extUI = document.createElement('div');
-extUI.id = 'chipmunk-ext-container';
-extUI.innerHTML = '<label for="url-input">article url:</label> <input id="url-input" type="text" /> <input type="button" value="save to drive" /> <button id="dismiss-chipmunk">close</button>';
-// add it to the DOM
-document.body.appendChild(extUI);
-// set the input value to be the location
-document.getElementById('url-input').value = document.location.href;
+// just removes the extension container from the page
+function dismissBanner(){
+  $('#chipmunk-ext-container').remove();
+}
 
-dismiss = document.getElementById('dismiss-chipmunk');
 
-dismiss.addEventListener('click', dismissExt, false);
+// gets extension options from localstorage
+function getConfig(){
+  var deferred = $.Deferred();
+  chrome.runtime.sendMessage(
+    {message:'getLocalStorage'},
+    function(response){
+      deferred.resolve(response.data);
+    }
+  );
+  return deferred.promise();
+}
+
+// value is the piece of data to be stored
+// type is a key to [name] > [column] mapping in the options
+function sendToDrive(options, value){
+  var data = {
+    worksheetKey: options.worksheetKey,
+    col: options.defaultCol,
+    value: value
+  };
+
+  function success(d){
+    console.log(d);
+  }
+
+  $.ajax({
+    type: 'POST',
+    contentType:'application/json; charset=utf-8',
+    datType: 'json',
+    url:  options.backendUrl+'/api/v1/cell/append',
+    data: JSON.stringify(data),
+    success: success,
+  });
+}
+
+
+getConfig().done(function start(d){
+  var options = d;
+  var chipmunkUI = addBannerToDom();
+
+  sendToDrive(options, document.location.href);
+  chipmunkUI.dismiss.on('click', dismissBanner);
+
+
+});
+

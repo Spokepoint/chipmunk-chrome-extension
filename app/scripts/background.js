@@ -4,9 +4,6 @@
 */
 'use strict';
 
-chrome.runtime.onInstalled.addListener(function (details) {
-    console.log('previousVersion', details.previousVersion);
-  });
 
 chrome.browserAction.onClicked.addListener(function(tab){
   chrome.tabs.executeScript(tab.id, {
@@ -18,3 +15,15 @@ chrome.browserAction.onClicked.addListener(function(tab){
     }
   });
 });
+
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResp){
+    if(req.message === 'getLocalStorage'){
+      var ls = {};
+      for (var k in localStorage){
+        ls[k] = localStorage[k];
+      }
+      sendResp({data: ls});
+    }
+  });

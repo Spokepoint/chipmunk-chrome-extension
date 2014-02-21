@@ -30,11 +30,13 @@
             "css": [
                 "styles/main.css"
             ],
+            "js": ["bower_components/jquery/dist/jquery.js"],
             "all_frames": false
         }
     ],
     "permissions": [
         "activeTab",
+        "storage",
         "*://*/*"
     ]
 }

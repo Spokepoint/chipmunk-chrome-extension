@@ -7,8 +7,21 @@
   background: #fefefe;
   border-bottom: 5px solid green;
   z-index: 1000;
+  text-align: left;
+}
+#chipmunk-close{
+  background: none;
+  color: #666;
+  border: none;
+  position: absolute;
+  right: 1rem;
+  top:0.5rem;
+  display: inline-block;
+  cursor:pointer;
+}
+#chipmunk-close:hover{
+  background: none;
+  border:none;
+  color:#222;
 }
 
-#url-input{
-  font-size: 0.8rem;
-}
