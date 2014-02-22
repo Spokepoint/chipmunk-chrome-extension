@@ -1,6 +1,7 @@
 #Chipmunk
 
-A Google Chrome extension for the [Chipmunk Rest Api](https://github.com/GlassyMedia/chipmunk-restapi) to help you stash data in Google Drive Spreadsheets
+Chipmunk is a bookmarking Google Chrome extension to stash data into your Google Spreadsheet.
+It works with a companion [Chipmunk Rest Api](https://github.com/GlassyMedia/chipmunk-restapi) that handles the data.
 
 ##Usage
 
@@ -12,9 +13,9 @@ You'll need [bower](http://bower.io/) and [node/npm](http://nodejs.org/) to inst
 ```
 
 ###To Run:
- * go to `chrome://extensions` in chrome and check the "Developer Mode" box
- * click "Load unpacked extensions" and navigate to the `app` directory and load that up
-
+* go to `chrome://extensions` in chrome and check the "Developer Mode" box
+* click "Load unpacked extensions" and navigate to the `app` directory and load that up
+* set your configuration by using the options menu of the plugin
 
 ###To Build:
 ```sh
@@ -27,6 +28,5 @@ You'll need [bower](http://bower.io/) and [node/npm](http://nodejs.org/) to inst
 ```
 
 ###Configuration:
-Configuration happens in the options menu of the plugin, within Chrome.
+Configuration happens in the options menu of the plugin, within Chrome. Right click on the plugin icon to see the option menu.
 
-###
