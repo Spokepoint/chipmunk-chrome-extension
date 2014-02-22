@@ -22,11 +22,6 @@ You'll need [bower](http://bower.io/) and [node/npm](http://nodejs.org/) to inst
   grunt build
 ```
 
-###To Test:
-```sh
-  grunt test
-```
-
 ###Configuration:
 Configuration happens in the options menu of the plugin, within Chrome. Right click on the plugin icon to see the option menu.
 
