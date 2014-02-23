@@ -28,7 +28,7 @@ function dismissBanner(){
 function getConfig(){
   var deferred = $.Deferred();
   function resolveConfigData(response){
-      deferred.resolve(response.data);
+    deferred.resolve(response.data);
   }
 
   chrome.runtime.sendMessage({message:'getLocalStorage'}, resolveConfigData);
@@ -45,10 +45,17 @@ function sendToDrive(options, value){
     value: value
   };
 
+  // called after ajex call success
   function success(d){
     console.log(d);
   }
 
+  // called after ajax call completes
+  function complete(xhr) {
+    console.log(xhr.status);
+  }
+
+  // send an ajax call to the backend rest api to write the data
   $.ajax({
     type: 'POST',
     contentType:'application/json; charset=utf-8',
@@ -56,18 +63,19 @@ function sendToDrive(options, value){
     url:  options.backendUrl+'/api/v1/cell/append',
     data: JSON.stringify(data),
     success: success,
+    complete: complete,
   });
 }
 
 
 getConfig().done(function start(d){
   var options = d;
-  // TODO call this with proper parameter after ajax
-  var chipmunkUI = addBannerToDom('saved');
+  var chipmunkUI;
 
   sendToDrive(options, document.location.href);
+  // TODO call this with proper parameter after ajax
+  chipmunkUI = addBannerToDom('saved');
 
   chipmunkUI.dismiss.on('click', dismissBanner);
-
 });
 
