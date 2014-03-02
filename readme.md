@@ -25,6 +25,12 @@ You'll need [bower](http://bower.io/) and [node/npm](http://nodejs.org/) to inst
 ###Configuration:
 Configuration happens in the options menu of the plugin, within Chrome. Right click on the plugin icon to see the option menu.
 
+###Documentation:
+```sh
+  npm install docco
+  grunt docs
+```
+
 ## License
 
 The MIT License (MIT)
