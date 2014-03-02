@@ -48,6 +48,14 @@ module.exports = function (grunt) {
                 // change this to '0.0.0.0' to access the server from outside
                 hostname: 'localhost'
             },
+            docs: {
+                options: {
+                    port: 9001,
+                    hostname: 'localhost',
+                    base: 'docs',
+                    keepalive: true
+                }
+            },
             test: {
                 options: {
                     middleware: function (connect) {
@@ -299,5 +307,9 @@ module.exports = function (grunt) {
         'jshint',
         'test',
         'build'
+    ]);
+
+    grunt.registerTask('docs', [
+        'connect:docs'
     ]);
 };
