@@ -1,4 +1,5 @@
 #Chipmunk
+![chipmunk logo](app/images/icon-128.png)
 
 Chipmunk is a bookmarking Google Chrome extension to stash data into your Google Spreadsheet.
 It works with a companion [Chipmunk Rest Api](https://github.com/GlassyMedia/chipmunk-restapi) that handles the data.
