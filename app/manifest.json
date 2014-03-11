@@ -21,6 +21,7 @@
         "default_title": "chipmunk chrome extension"
     },
     "options_page": "options.html",
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "content_scripts": [
         {
             "matches": [
@@ -30,7 +31,10 @@
             "css": [
                 "styles/main.css"
             ],
-            "js": ["bower_components/jquery/dist/jquery.js"],
+            "js": [
+                "bower_components/jquery/dist/jquery.js",
+                "bower_components/lodash/dist/lodash.js"
+            ],
             "all_frames": false
         }
     ],

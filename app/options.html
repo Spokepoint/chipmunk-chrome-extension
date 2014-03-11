@@ -4,6 +4,7 @@
         <link href="styles/main.css" rel="stylesheet">
         <!-- build:js scripts/options.js -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/lodash/dist/lodash.js"></script>
         <script src="scripts/options.js"></script>
         <!-- endbuild -->
     </head>
@@ -13,22 +14,28 @@
 
         <p>Fields are automatically saved as it is filled.</p>
 
-        <form method="post" action="">
-            <fieldset>
-                <legend>Options</legend>
+        <form>
+            <fieldset id="js-config-fieldset">
+                <legend>Configuration</legend>
                 <p>
-                    <label for="backend-url">backend api server:</label>
-                    <input id="backend-url" name="backendUrl" class="js-stored" type="text">
+                    <label for="api-url">backend api server:</label>
+                    <input id="api-url" name="apiURL" class="js-config-stored" type="text">
                 </p>
                 <p>
                     <label for="worksheet-key">worksheet key:</label>
-                    <input id="worksheet-key" name="worksheetKey" class="js-stored" type="text">
-                </p>
-                <p>
-                    <label for="default-col">default column:</label>
-                    <input id="default-col" name="defaultCol" class="js-stored" type="text">
+                    <input id="worksheet-key" name="worksheetKey" class="js-config-stored" type="text">
                 </p>
             </fieldset>
         </form>
+
+        <form>
+            <fieldset id="js-colmap-fieldset">
+                <legend>Column Mappings</legend>
+            </fieldset>
+            <button id="js-add-column" type="button" > Add Column</button>
+        </form>
+
+        <button id="js-save-changes" type="button" > Save All Changes</button>
+
     </body>
 </html>
