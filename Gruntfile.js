@@ -30,6 +30,14 @@ module.exports = function (grunt) {
         spawn: false
       }
     },
+    docco: {
+      debug: {
+        src: ['app/scripts/*.js'],
+        options: {
+          output: 'docs/'
+        }
+      }
+    },
     connect: {
       options: {
         port: 9000,
@@ -225,6 +233,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('docs', [
+    'docco',
     'connect:docs'
   ]);
 };

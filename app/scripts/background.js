@@ -1,7 +1,7 @@
-/*
-  This gets run as soon as the app is active. If we want an "onboarding" to
-  set up auth or something we can do that here.
-*/
+
+  // This gets run as soon as the app is active. If we want an "onboarding" to
+  // set up auth or something we can do that here.
+
 'use strict';
 
 

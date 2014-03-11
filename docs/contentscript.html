@@ -121,7 +121,7 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getConfig</span><span class="hljs-params">()</span>{</span>
   <span class="hljs-keyword">var</span> deferred = $.Deferred();
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolveConfigData</span><span class="hljs-params">(response)</span>{</span>
-      deferred.resolve(response.data);
+    deferred.resolve(response.data);
   }
 
   chrome.runtime.sendMessage({message:<span class="hljs-string">'getLocalStorage'</span>}, resolveConfigData);
@@ -147,25 +147,7 @@
     worksheetKey: options.worksheetKey,
     col: options.defaultCol,
     value: value
-  };
-
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">success</span><span class="hljs-params">(d)</span>{</span>
-    console.log(d);
-  }
-
-  $.ajax({
-    type: <span class="hljs-string">'POST'</span>,
-    contentType:<span class="hljs-string">'application/json; charset=utf-8'</span>,
-    datType: <span class="hljs-string">'json'</span>,
-    url:  options.backendUrl+<span class="hljs-string">'/api/v1/cell/append'</span>,
-    data: <span class="hljs-built_in">JSON</span>.stringify(data),
-    success: success,
-  });
-}
-
-
-getConfig().done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span><span class="hljs-params">(d)</span>{</span>
-  <span class="hljs-keyword">var</span> options = d;</pre></div></div>
+  };</pre></div></div>
             
         </li>
         
@@ -176,16 +158,78 @@ getConfig().done(<span class="hljs-function"><span class="hljs-keyword">function
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
+              <p>called after ajex call success</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">success</span><span class="hljs-params">(d)</span>{</span>
+    console.log(d);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>called after ajax call completes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">complete</span><span class="hljs-params">(xhr)</span> {</span>
+    console.log(xhr.status);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>send an ajax call to the backend rest api to write the data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $.ajax({
+    type: <span class="hljs-string">'POST'</span>,
+    contentType:<span class="hljs-string">'application/json; charset=utf-8'</span>,
+    datType: <span class="hljs-string">'json'</span>,
+    url:  options.backendUrl+<span class="hljs-string">'/api/v1/cell/append'</span>,
+    data: <span class="hljs-built_in">JSON</span>.stringify(data),
+    success: success,
+    complete: complete,
+  });
+}
+
+
+getConfig().done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span><span class="hljs-params">(d)</span>{</span>
+  <span class="hljs-keyword">var</span> options = d;
+  <span class="hljs-keyword">var</span> chipmunkUI;
+
+  sendToDrive(options, document.location.href);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
               <p>TODO call this with proper parameter after ajax</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> chipmunkUI = addBannerToDom(<span class="hljs-string">'saved'</span>);
-
-  sendToDrive(options, document.location.href);
+            <div class="content"><div class='highlight'><pre>  chipmunkUI = addBannerToDom(<span class="hljs-string">'saved'</span>);
 
   chipmunkUI.dismiss.on(<span class="hljs-string">'click'</span>, dismissBanner);
-
 });</pre></div></div>
             
         </li>
