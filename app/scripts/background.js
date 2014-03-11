@@ -22,7 +22,11 @@ chrome.runtime.onMessage.addListener(
     if(req.message === 'getLocalStorage'){
       var ls = {};
       for (var k in localStorage){
-        ls[k] = localStorage[k];
+        if(k === 'colMappings'){
+          ls[k] = JSON.parse(localStorage[k]);
+        }else{
+          ls[k] = localStorage[k];
+        }
       }
       sendResp({data: ls});
     }

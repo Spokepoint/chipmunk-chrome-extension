@@ -70,6 +70,7 @@ function sendToDrive(options, value){
 
 getConfig().done(function start(d){
   var options = d;
+  console.log(options);
   var chipmunkUI;
 
   sendToDrive(options, document.location.href);
