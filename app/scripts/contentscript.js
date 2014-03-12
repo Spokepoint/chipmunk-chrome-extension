@@ -1,82 +1,110 @@
-/*
-  This is what gets run when you click on the extension icon.
-*/
+
+//  This is what gets run when you click on the extension icon.
+//  This script runs in a sandboxed environment.
+
 
 'use strict';
 
+var chipmunk = (function($, _){
 
-function addBannerToDom(text){
-  $('body').append('<div id="chipmunk-ext-container"> '+
-      '<p>'+text+'</p>'+
-      '<button id="chipmunk-close">close</button>'+
-    '</div>');
+  var cp = {
+    // gets extension options from localstorage
+    getConfig: function(){
+      var deferred = $.Deferred();
+      function resolveConfigData(response){
+        deferred.resolve(response.data);
+      }
+      chrome.runtime.sendMessage(
+        {message:'getLocalStorage'}, resolveConfigData);
+      return deferred.promise();
+    },
+    pageUI:{
+      body: $('body')
+    },
+    extUI: {},
+    bindExtUI: function(){
+      this.extUI.dismiss = $('#chipmunk-close');
+      this.extUI.save = $('#chipmunk-save');
+      this.extUI.container = $('#chipmunk-ext-container');
+      this.extUI.dataInputs = $('.js-column-map');
+    },
+    templates: {
+      container: '<div id="chipmunk-ext-container"> '+
+        '<button id="chipmunk-save">save</button>'+
+        '<button id="chipmunk-close">close</button>'+
+        '</div>',
+      dataInput: '<label> <%= title %> </label><input name="column" class="js-column-map" data-title="<%= title %>" data-column="<%= column %>" type="text">',
 
-  // return a ui elements hash
-  return {
-    dismiss: $('#chipmunk-close'),
-    container: $('#chipmunk-ext-container'),
+    },
+    initUI: function(){
+      this.pageUI.body.append(this.templates.container);
+      this.bindExtUI();
+    },
+    populateInputs: function(options, $rootEl){
+      var that = this;
+      console.log(options.colMappings);
+      _.each(options.colMappings, function(mapping){
+        $rootEl.append(_.template(that.templates.dataInput, mapping));
+      });
+      this.bindExtUI();
+      // rebind the ui map
+    },
+    dismissBanner: function(){
+      this.extUI.container.remove();
+    },
+    getColMapInput: function(){
+      return $.map(this.extUI.dataInputs, function(el){
+        var data = $(el).data();
+        data.value = $(el).val();
+        return data;
+      });
+    },
+    sendToDrive: function(e){
+      var that = this;
+      var options = e.data.options;
+      var inputPayload = this.getColMapInput();
+
+      var dataArr = _.map(inputPayload, function(item){
+        return {
+          worksheetKey: options.worksheetKey,
+          col: item.column,
+          value: item.value
+        };
+      });
+
+      _.each(dataArr, function(data){
+        // send an ajax call to the backend rest api to write the data
+        $.ajax({
+          type: 'POST',
+          contentType:'application/json; charset=utf-8',
+          dataType: 'json',
+          url:  options.apiURL+'/api/v1/cell/append',
+          data: JSON.stringify(data),
+          success: that.saveSuccess,
+          complete: that.ajaxComplete,
+        });
+      });
+    },
+    saveSucess: function(d){
+      console.log(d);
+    },
+    complete: function(xhr){
+      console.log(xhr.status);
+    }
   };
-}
 
-// removes the extension container from the page
-function dismissBanner(){
-  $('#chipmunk-ext-container').remove();
-}
+  return cp;
+
+})($, _);
 
 
-// gets extension options from localstorage
-function getConfig(){
-  var deferred = $.Deferred();
-  function resolveConfigData(response){
-    deferred.resolve(response.data);
-  }
+// begin
 
-  chrome.runtime.sendMessage({message:'getLocalStorage'}, resolveConfigData);
+chipmunk.getConfig().done(function (options){
+  chipmunk.initUI();
+  chipmunk.populateInputs(options, chipmunk.extUI.container);
 
-  return deferred.promise();
-}
-
-
-// value is the piece of data to be stored
-function sendToDrive(options, value){
-  var data = {
-    worksheetKey: options.worksheetKey,
-    col: options.defaultCol,
-    value: value
-  };
-
-  // called after ajex call success
-  function success(d){
-    console.log(d);
-  }
-
-  // called after ajax call completes
-  function complete(xhr) {
-    console.log(xhr.status);
-  }
-
-  // send an ajax call to the backend rest api to write the data
-  $.ajax({
-    type: 'POST',
-    contentType:'application/json; charset=utf-8',
-    datType: 'json',
-    url:  options.backendUrl+'/api/v1/cell/append',
-    data: JSON.stringify(data),
-    success: success,
-    complete: complete,
-  });
-}
-
-
-getConfig().done(function start(d){
-  var options = d;
-  console.log(options);
-  var chipmunkUI;
-
-  sendToDrive(options, document.location.href);
-  // TODO call this with proper parameter after ajax
-  chipmunkUI = addBannerToDom('saved');
-
-  chipmunkUI.dismiss.on('click', dismissBanner);
+  chipmunk.extUI.save.on('click', {options: options}, _.bind(chipmunk.sendToDrive, chipmunk));
+  chipmunk.extUI.dismiss.on('click', _.bind(chipmunk.dismissBanner, chipmunk));
 });
 
