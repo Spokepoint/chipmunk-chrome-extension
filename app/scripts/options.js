@@ -19,7 +19,7 @@ var chipmunk = {
     }
 
     //set column mappings
-    var colmappings = JSON.parse(localStorage.colMappings);
+    var colmappings = localStorage.colMappings ? JSON.parse(localStorage.colMappings) : {};
     var template = '<p class="js-col-mapping"> <label> column title <input name="title" class="js-title" type="text" value="<%= title %>"> </label>'+
                     '<label> column <input name="column" class="js-column" type="text" value="<%= column %>""> </label>'+
                     '<button class="js-delete-colmap" type="button">remove</button></p>';
